@@ -22,6 +22,7 @@ public class MetricsReceiver extends Receiver<HashMap<String, Object>> {
 
     private ServerSocket sparkSocket;
     private Socket metricsSocket;
+    private BufferedReader reader;
     private String host;
     private Integer port;
     private StorageLevel storageLevel;
@@ -38,13 +39,15 @@ public class MetricsReceiver extends Receiver<HashMap<String, Object>> {
         this.host = host;
         this.port = port;
         this.storageLevel = storageLevel;
+        sparkSocket = null;
+        metricsSocket = null;
+        reader = null;
     }
 
     @Override
     public StorageLevel storageLevel() {
         return storageLevel;
     }
-
 
     @Override
     public void onStart() {
@@ -58,37 +61,58 @@ public class MetricsReceiver extends Receiver<HashMap<String, Object>> {
 
     @Override
     public void onStop() {
-        try {
-            metricsSocket.close();
-            sparkSocket.close();
-        } catch (IOException ioe) {
-            LOGGER.error("Error stop receiver", ioe);
-        }
+        close();
     }
 
     private void receive() {
 
         try {
-            sparkSocket = new ServerSocket(port, 0, InetAddress.getByName(host));
-            metricsSocket = sparkSocket.accept();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(metricsSocket.getInputStream()));
+            connect();
 
             ObjectMapper mapper = new ObjectMapper(new JsonFactory());
             String input;
+            HashMap<String, Object> map;
 
             while (!isStopped() && (input = reader.readLine()) != null) {
-                store((HashMap<String, Object>)
-                    mapper.readValue(input, new TypeReference<HashMap<String, Object>>() {
-                    }));
+                map = mapper.readValue(input, new TypeReference<HashMap<String, Object>>() {});
+                store(map);
             }
+            close();
+
         } catch (UnknownHostException uhe) {
             LOGGER.error("Could not reach Metrics", uhe);
+            receive();
         } catch (JsonMappingException jme) {
             LOGGER.error("Error during receiving data", jme);
+            receive();
         } catch (JsonParseException jpe) {
             LOGGER.error("Error during parsing data", jpe);
+            receive();
         } catch (IOException ioe) {
             LOGGER.error("Could not read data received", ioe);
+            receive();
         }
+    }
+
+    private void connect() throws IOException {
+        if (sparkSocket != null || metricsSocket != null || reader != null) {
+            close();
+        }
+        sparkSocket = new ServerSocket(port, 0, InetAddress.getByName(host));
+        metricsSocket = sparkSocket.accept();
+        reader = new BufferedReader(new InputStreamReader(metricsSocket.getInputStream()));
+    }
+
+    private void close() {
+        try {
+            reader.close();
+            metricsSocket.close();
+            sparkSocket.close();
+        } catch (IOException ioe) {
+            LOGGER.error("Could not disconnect from Metrics", ioe);
+        }
+        reader = null;
+        metricsSocket = null;
+        sparkSocket = null;
     }
 }
