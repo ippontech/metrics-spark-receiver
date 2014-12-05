@@ -7,6 +7,23 @@
     <groupId>fr.ippontech.metrics.spark</groupId>
     <artifactId>metrics-spark-receiver</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <name>Apache Spark Integration for Metrics</name>
+    <description>A java custom receiver for Apache Spark Streaming which reads a stream of measurements
+        from an application using the library Metrics of Dropwizard.</description>
+    <url>https://github.com/ippontech/metrics-spark-receiver</url>
+
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>scm:git:git@github.com:ippontech/metrics-spark-receiver.git</connection>
+        <developerConnection>scm:git:git@github.com:ippontech/metrics-spark-receiver.git</developerConnection>
+        <url>git@github.com:ippontech/metrics-spark-receiver.git</url>
+    </scm>
 
     <properties>
         <java.version>1.8</java.version>
@@ -32,6 +49,12 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>2.4.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.elasticsearch</groupId>
+            <artifactId>elasticsearch-spark_2.10</artifactId>
+            <version>2.1.0.Beta3</version>
         </dependency>
 
     </dependencies>
