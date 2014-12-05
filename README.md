@@ -19,7 +19,7 @@ By default, communications between the reporter and the receiver use the host `l
 In order to test this custom receiver, you can :
 * Run the [JHipster](http://jhipster.github.io/) sample available
 in the [metrics-spark-reporter](https://github.com/ippontech/metrics-spark-reporter) repo.
-* Run the class MetricsToConsole to display the metrics received from the JHipster sample.
+* Run the class `MetricsToConsole` to display the metrics received from the JHipster sample.
 
 Run the JHipster sample with the Maven command :
 ```

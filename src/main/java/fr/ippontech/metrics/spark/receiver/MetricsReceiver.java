@@ -1,9 +1,7 @@
 package fr.ippontech.metrics.spark.receiver;
 
 import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.spark.storage.StorageLevel;
 import org.apache.spark.streaming.receiver.Receiver;
@@ -24,17 +22,17 @@ public class MetricsReceiver extends Receiver<HashMap<String, Object>> {
     private Socket metricsSocket;
     private BufferedReader reader;
     private String host;
-    private Integer port;
+    private int port;
     private StorageLevel storageLevel;
 
-    public MetricsReceiver(String host, Integer port) {
+    public MetricsReceiver(String host, int port) {
         super(StorageLevel.MEMORY_ONLY());
         this.host = host;
         this.port = port;
         this.storageLevel = StorageLevel.MEMORY_ONLY();
     }
 
-    public MetricsReceiver(String host, Integer port, StorageLevel storageLevel) {
+    public MetricsReceiver(String host, int port, StorageLevel storageLevel) {
         super(storageLevel);
         this.host = host;
         this.port = port;
@@ -58,10 +56,13 @@ public class MetricsReceiver extends Receiver<HashMap<String, Object>> {
             }
         }.start();
     }
-
     @Override
     public void onStop() {
-        close();
+        try {
+            close();
+        } catch (IOException ioe) {
+            LOGGER.warn("Could not stop the receiver properly : ", ioe.getClass().getCanonicalName());
+        }
     }
 
     private void receive() {
@@ -78,18 +79,8 @@ public class MetricsReceiver extends Receiver<HashMap<String, Object>> {
                 store(map);
             }
             close();
-
-        } catch (UnknownHostException uhe) {
-            LOGGER.error("Could not reach Metrics", uhe);
-            receive();
-        } catch (JsonMappingException jme) {
-            LOGGER.error("Error during receiving data", jme);
-            receive();
-        } catch (JsonParseException jpe) {
-            LOGGER.error("Error during parsing data", jpe);
-            receive();
         } catch (IOException ioe) {
-            LOGGER.error("Could not read data received", ioe);
+            LOGGER.warn("Unable to receive from Metrics : ", ioe.getClass().getCanonicalName());
             receive();
         }
     }
@@ -103,14 +94,10 @@ public class MetricsReceiver extends Receiver<HashMap<String, Object>> {
         reader = new BufferedReader(new InputStreamReader(metricsSocket.getInputStream()));
     }
 
-    private void close() {
-        try {
-            reader.close();
-            metricsSocket.close();
-            sparkSocket.close();
-        } catch (IOException ioe) {
-            LOGGER.error("Could not disconnect from Metrics", ioe);
-        }
+    private void close() throws IOException {
+        reader.close();
+        metricsSocket.close();
+        sparkSocket.close();
         reader = null;
         metricsSocket = null;
         sparkSocket = null;

@@ -13,7 +13,7 @@ public class MetricsToConsole {
             .setAppName("MetricsToConsole")
             .setMaster("local[2]");
 
-        JavaStreamingContext ssc = new JavaStreamingContext(conf, new Duration(10000));
+        JavaStreamingContext ssc = new JavaStreamingContext(conf, new Duration(5000));
 
         ssc.receiverStream(new MetricsReceiver("localhost", 9999))
             .foreachRDD(rdd -> {
