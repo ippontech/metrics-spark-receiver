@@ -16,7 +16,6 @@ RUN apt-get update && apt-get install -y \
     sudo \
     git \
     maven \
-    curl \
     oracle-java8-installer && \
     apt-get clean
 
@@ -24,16 +23,9 @@ RUN apt-get update && apt-get install -y \
 RUN update-java-alternatives -s java-8-oracle
 RUN echo "export JAVA_HOME=/usr/lib/jvm/java-8-oracle" >> ~/.bashrc
 
-# Install Spark 1.1.1
-RUN curl http://d3kbcqa49mib13.cloudfront.net/spark-1.1.1-bin-hadoop2.4.tgz | tar xvz
-
 # install the metrics-spark-receiver
 RUN git clone https://github.com/ahars/metrics-spark.git
 RUN cd metrics-spark/ && \
     mvn package
 
-EXPOSE 8080 7077 9999
-
-CMD spark-1.1.1-bin-hadoop2.4/bin/spark-submit \
-    --class "fr.ippontech.metrics.spark.streaming.MetricsToConsole" \
-    metrics-spark/target/metrics-spark-1.0-SNAPSHOT.jar
+CMD java -cp metrics-spark/target/metrics-spark-1.0-SNAPSHOT.jar fr.ippontech.metrics.spark.streaming.MetricsToConsole

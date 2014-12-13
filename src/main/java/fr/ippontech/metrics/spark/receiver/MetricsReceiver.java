@@ -21,20 +21,17 @@ public class MetricsReceiver extends Receiver<HashMap<String, Object>> {
     private ServerSocket sparkSocket;
     private Socket metricsSocket;
     private BufferedReader reader;
-    private String host;
     private int port;
     private StorageLevel storageLevel;
 
-    public MetricsReceiver(String host, int port) {
+    public MetricsReceiver(int port) {
         super(StorageLevel.MEMORY_ONLY());
-        this.host = host;
         this.port = port;
         this.storageLevel = StorageLevel.MEMORY_ONLY();
     }
 
-    public MetricsReceiver(String host, int port, StorageLevel storageLevel) {
+    public MetricsReceiver(int port, StorageLevel storageLevel) {
         super(storageLevel);
-        this.host = host;
         this.port = port;
         this.storageLevel = storageLevel;
         sparkSocket = null;
@@ -89,7 +86,7 @@ public class MetricsReceiver extends Receiver<HashMap<String, Object>> {
         if (sparkSocket != null || metricsSocket != null || reader != null) {
             close();
         }
-        sparkSocket = new ServerSocket(port, 0, InetAddress.getByName(host));
+        sparkSocket = new ServerSocket(port);
         metricsSocket = sparkSocket.accept();
         reader = new BufferedReader(new InputStreamReader(metricsSocket.getInputStream()));
     }
