@@ -4,9 +4,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>fr.ippontech.metrics.spark</groupId>
+    <groupId>fr.ippon</groupId>
     <artifactId>metrics-spark-receiver</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
+    <packaging>jar</packaging>
+
     <name>Apache Spark Integration for Metrics</name>
     <description>A java custom receiver for Apache Spark Streaming which reads a stream of measurements
         from an application using the library Metrics of Dropwizard.</description>
@@ -19,10 +21,19 @@
         </license>
     </licenses>
 
+    <developers>
+        <developer>
+            <name>Antoine Hars</name>
+            <email>ahars@ippon.fr</email>
+            <organization>Ippon Technologies</organization>
+            <organizationUrl>http://www.ippon.fr</organizationUrl>
+        </developer>
+    </developers>
+
     <scm>
-        <connection>scm:git:git@github.com:ippontech/metrics-spark-receiver.git</connection>
+        <connection>scm:git:https://github.com/ippontech/metrics-spark-receiver.git</connection>
         <developerConnection>scm:git:git@github.com:ippontech/metrics-spark-receiver.git</developerConnection>
-        <url>git@github.com:ippontech/metrics-spark-receiver.git</url>
+        <url>https://github.com/ippontech/metrics-spark-receiver</url>
     </scm>
 
     <properties>
@@ -64,6 +75,32 @@
                     <source>${java.version}</source>
                     <target>${java.version}</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.4</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.10.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

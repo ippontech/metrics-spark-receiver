@@ -1,4 +1,4 @@
-package fr.ippontech.metrics.spark.receiver;
+package fr.ippon;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.type.TypeReference;
