@@ -14,6 +14,10 @@ import java.io.InputStreamReader;
 import java.net.*;
 import java.util.HashMap;
 
+/**
+ * A Spark Streaming receiver which reads metric values sent by a Metrics SparkReporter.
+ *
+ */
 public class MetricsReceiver extends Receiver<HashMap<String, Object>> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MetricsReceiver.class);
@@ -44,6 +48,9 @@ public class MetricsReceiver extends Receiver<HashMap<String, Object>> {
         return storageLevel;
     }
 
+    /**
+     * This method is called by the system when the receiver is started.
+     */
     @Override
     public void onStart() {
         new Thread() {
@@ -53,6 +60,10 @@ public class MetricsReceiver extends Receiver<HashMap<String, Object>> {
             }
         }.start();
     }
+
+    /**
+     * This method is called by the system when the receiver is stopped.
+     */
     @Override
     public void onStop() {
         try {
