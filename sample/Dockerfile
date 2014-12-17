@@ -28,4 +28,4 @@ RUN git clone https://github.com/ahars/metrics-spark.git
 RUN cd metrics-spark/ && \
     mvn package
 
-CMD java -cp metrics-spark/target/metrics-spark-1.0-SNAPSHOT.jar fr.ippon.MetricsToConsole
+CMD java -cp metrics-spark/target/metrics-spark-1.0-SNAPSHOT.jar fr.ippontech.MetricsToConsole
