@@ -8,8 +8,17 @@ for the repo [metrics-spark-reporter] (https://github.com/ippontech/metrics-spar
 
 ## Configuration
 
-You can read the stream of metrics in your Spark app
-by using the method `JavaStreamingContext.receiverStream()` with the custom receiver created :
+In order to receive some metrics in your Spark application, you need to add the dependency :
+```
+<dependency>
+  <groupId>fr.ippon</groupId>
+  <artifactId>metrics-spark-receiver</artifactId>
+  <version>1.0</version>
+</dependency>
+```
+
+Then you can read the stream of metrics by using
+the method `JavaStreamingContext.receiverStream()` with the custom receiver created :
 ```
 ssc.receiverStream(new MetricsReceiver(9999));
 ```

@@ -58,11 +58,6 @@
             <artifactId>jackson-databind</artifactId>
             <version>2.4.4</version>
         </dependency>
-        <dependency>
-            <groupId>org.elasticsearch</groupId>
-            <artifactId>elasticsearch-spark_2.10</artifactId>
-            <version>2.1.0.Beta3</version>
-        </dependency>
     </dependencies>
 
     <distributionManagement>
