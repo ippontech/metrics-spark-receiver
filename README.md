@@ -11,9 +11,9 @@ for the repo [metrics-spark-reporter] (https://github.com/ippontech/metrics-spar
 In order to receive some metrics in your Spark application, you need to add the dependency :
 ```
 <dependency>
-  <groupId>fr.ippon</groupId>
+  <groupId>fr.ippon.spark.metrics</groupId>
   <artifactId>metrics-spark-receiver</artifactId>
-  <version>1.0</version>
+  <version>1.1</version>
 </dependency>
 ```
 
@@ -42,3 +42,4 @@ $ mvn spring-boot:run
 Display metrics received by launching one of those two classes of metrics-spark :
 * `MetricsToConsole` to display data in the console.
 * `MetricsToES` to send data to an ElasticSearch server via Spark in order to use Kibana.
+

@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>fr.ippon</groupId>
+    <groupId>fr.ippon.spark.metrics</groupId>
     <artifactId>metrics-spark-receiver</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
     <packaging>jar</packaging>
 
     <name>Apache Spark Integration for Metrics</name>
@@ -38,8 +38,9 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <spark.version>1.1.1</spark.version>
+        <spark.version>1.2</spark.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jackson.core.version>2.4.4</jackson.core.version>
     </properties>
 
     <dependencies>
@@ -56,7 +57,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.4.4</version>
+            <version>${jackson.core.version}</version>
         </dependency>
     </dependencies>
 
